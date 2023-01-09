@@ -1,4 +1,4 @@
-# Final Year Project: Integration of Educational Games in Educational Platforms
+## Final Year Project: Integration of Educational Games in Educational Platforms
 
 A web application developed using Ruby on Rails.
 
@@ -13,11 +13,11 @@ A web application developed using Ruby on Rails.
 #### 1. Clone the project.
 ```bash
 $ git clone https://github.com/JonathanYap97/iegep-fyp.git
+$ cd iegep-fyp
 ```
 
 #### 2. Install the gems.
 ```bash
-$ cd iegep-fyp
 $ bundle install
 ```
 
