@@ -1,0 +1,111 @@
+<!-- Page Content -->
+<div class="page-content">
+  <div class="page-header d-flex flex-column flex-md-row align-items-md-center">
+      <div class="page-header-left flex-fill">
+          <div class="page-header-title d-flex">
+              <div class="page-info mt-3 ml-0">
+                <h5 class="page-title">My Quizzes</h5>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- Section Header -->
+  <div class="section-header d-md-flex align-items-center">
+    <div class="section-header-left flex-fill">
+      <h4 class="section-title">Quiz List</h4>
+    </div>
+    <div class="section-header-right ml-auto">
+      <button class="btn btn-danger" id="bulkDelete">Bulk Delete</button>
+      <div class="btn-group" role="group">
+        <%= link_to 'Create New Quiz', new_users_quiz_path, class: 'btn btn-primary-gradient' %>
+      </div>
+    </div>
+  </div>
+  <!-- / Section Header -->
+
+  <!-- Quiz List Table -->
+  <div class='alert alert-success' id="bulk-notification">Successfully deleted selected Quizzes.</div>
+  <div class="table-wrapper table-responsive">
+    <table id="contact-groups" class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">
+            <div class="form-check">
+              <input type="checkbox" class="custom-check-input checkAll" />
+            </div>
+          </th>
+          <th scope="col">Quiz</th>
+          <th scope="col">Type</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Code</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @quizzes.each do |q|%>
+          <tr id="row_<%= q.id %>">
+            <td scope="col">
+              <div class="form-check">
+                <input type="checkbox" class="custom-check-input check" value="<%= q.id %>" />
+              </div>
+            </td>
+            <td scope="col"><%= q.name %></td>
+            <td scope="col"><%= q.q_type.capitalize %></td>
+            <td scope="col"><%= DateTime.new(q.start_date.year, q.start_date.month, q.start_date.day, q.start_time.hour, q.start_time.min, q.start_time.sec, q.start_time.zone).strftime("%Y-%-m-%-d %H:%M:%S") %></td>
+            <td scope="col"><%= DateTime.new(q.end_date.year, q.end_date.month, q.end_date.day, q.start_time.hour, q.start_time.min, q.start_time.sec, q.start_time.zone).strftime("%Y-%-m-%-d %H:%M:%S") %></td>
+            <td scope="col"><%= q.code %></td>
+            <td class="table-action">
+              <%= link_to 'Edit', edit_users_quiz_path(q.id), class: 'btn btn-success', data: { turbolinks: false } %>
+              <%= link_to 'Delete', users_quiz_path(q.id), id: q.id, class: 'btn btn-danger btn-delete', data: {confirm: 'Are you sure want to delete this quiz?'}, method: :delete %>
+              <%= link_to 'Answers', users_quiz_answers_path(q.id), class: 'btn btn-info', data: { turbolinks: false } %>
+              <% if q.q_type == 'live' %>
+                <%= link_to 'Start', users_quiz_live_path(q.id), class: 'btn btn-info', data: { turbolinks: false } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- / Quiz List Table -->
+
+</div>
+
+
+
+<!-- / Page Content -->
+<script>
+  $('#bulk-notification').hide();
+  
+  $('#bulkDelete').on('click', function(e){
+    var arr = [];
+
+    $(".check:checked").each(function() {
+      arr.push($(this).val());
+    });
+    
+    arr.forEach(function(item) {
+        $.ajax({
+          url: '/user/quizzes/' + item,
+          type: 'DELETE',
+          data: {id: item},
+          success: function(result) {
+            $('#row_' + item).remove();
+          }
+        });
+    });
+
+    $('#bulk-notification').show();
+
+    setTimeout(function() {
+      window.location.reload();
+    }, 5000);
+  });
+
+  $('.btn-delete').click(function(e) {
+    $('#row_' + $(this).attr('id')).remove();
+  });
+</script>

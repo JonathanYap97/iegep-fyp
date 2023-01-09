@@ -1,0 +1,67 @@
+<div id="live-body" class="page-content">
+  <h1 class="mb-2"><%= name %></h1>
+  <hr class="pb-2 my-4">
+
+  <div class="card mt-3 mt-md-4">
+    <div class="card-header">
+      <h5 class="card-title float-left" style="font-size: 1.6em;">Question <%= number %></h5>
+      <div class="float-right">
+        <h4 id="timer">30</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-12">
+          <div class="form-group">
+            <textarea class="form-control form-readonly p-0" rows="4" style="resize: none; border: none; font-size: 1.5em; line-height: 1.5em;" readonly><%= q_text %>
+            </textarea>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="answer-button p-4 p-md-5" name="1" id="<%= id %>" style="background-color: #FF7E7E; cursor: pointer;">
+            <h4 class="text-center mb-0"><%= answer_1 %></h4>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 mt-3 mt-md-0">
+          <div class="answer-button p-4 p-md-5" name="2" id="<%= id %>" style="background-color: #7EABFF; cursor: pointer;">
+            <h4 class="text-center mb-0"><%= answer_2 %></h4>
+          </div>
+        </div>
+        <% if !answer_3.empty? %>
+          <div class="col-12 col-md-6 mt-3 mt-md-4">
+            <div class="answer-button p-4 p-md-5" name="3" id="<%= id %>" style="background-color: #FFFD7E; cursor: pointer;">
+              <h4 class="text-center mb-0"><%= answer_3 %></h4>
+            </div>
+          </div>
+        <% end %>
+        <% if !answer_4.empty? %>
+          <div class="col-12 col-md-6 mt-3 mt-md-4">
+            <div class="answer-button p-4 p-md-5" name="4" id="<%= id %>" style="background-color: #7EFF93; cursor: pointer;">
+              <h4 class="text-center mb-0"><%= answer_4 %></h4>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  q_timer = setInterval(function() {
+    number = parseInt($('#timer').text());
+    $('#timer').text((number - 1).toString());
+    
+    if (number <= 1) {
+      if(is_host == false) {
+        if ($('.answer-button[value="chosen"]').length) {
+          answer_no = parseInt($('.answer-button[value="chosen"]').attr('name'));
+        }
+  
+        App.quiz.answer(answer_no, $('.answer-button[name="1"]').attr('id'));
+      }
+      
+      clearInterval(q_timer);
+      answer_no = 0;
+    }
+  }, 1000);
+</script>

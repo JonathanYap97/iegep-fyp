@@ -1,0 +1,565 @@
+<!-- Page Content -->
+<div class="page-content">
+    <!-- Page Header -->
+    <div class="page-header d-flex flex-column flex-md-row align-items-md-center">
+        <div class="page-header-left flex-fill">
+            <div class="page-header-title d-flex">
+                <div class="page-info mt-3 ml-0">
+                    <h5 class="page-title">Edit <%= @quiz.name %></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form  -->
+    <%= form_for(@quiz, url: users_quiz_path(@quiz.id), method: :patch) do |f| %>
+        <!-- Section Header-->
+        <div class="section-header d-md-flex align-items-center">
+            <div class="section-header-left flex-fill">
+                <a href="<%= users_quizzes_path %>" class="page-btn-link">
+                    <i class="icon icon-reply"></i>
+                    Back to Quiz List
+                </a>
+            </div>
+            <div class="section-header-right ml-auto">
+                <button type="submit" class="btn btn-primary text-uppercase" id="submit">UPDATE</button>
+            </div>
+        </div>
+        <!-- / Section Header-->
+        <!-- Section-->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Quiz Details</h5>
+            </div>
+            <div class="card-body">
+                <!-- Form Fields -->
+                <div class="form-row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Quiz Name</label>
+                            <%= f.text_field :name, required: true, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Quiz Type</label>
+                            <%= f.select :q_type, options_for_select([['Classic Exam', 'classic'],['Fun Live Test', 'live']], (@quiz.q_type == 'classic' ? 'classic' : 'live')), {}, required: true, class: 'form-control'%>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Quiz Description</label>
+                            <%= f.text_area :description, required: true, rows: 3, class: 'form-control', style: 'resize: none;' %>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <input type="text" id="start-date" class="form-control" placeholder="dd/mm/yyyy" name="quiz[start_date]" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="end-date">End Date</label>
+                            <input type="text" id="end-date" class="form-control" placeholder="dd/mm/yyyy"  name="quiz[end_date]" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4">
+                        <p class="form-text text-muted mb-3">*The maximum webinar length is 7 days.</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <%= f.time_field :start_time, required: true, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <%= f.time_field :end_time, required: true, class: 'form-control' %>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Form Fields -->
+            </div>
+        </div>
+        <!-- / Section -->
+        <input id="question-number" type="hidden" name="questions[number]" value="">
+        <div id="question-data"></div>
+    <% end %>
+    <!-- / Form  -->
+    <div class="card mt-3 mt-md-4">
+        <div class="card-header">
+            <h5 class="card-title">Add Questions</h5>
+        </div>
+        <div class="card-body">
+            <!-- Form Fields -->
+            <div class="form-row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Question Text</label>
+                        <textarea required="required" class="form-control" id="q-text" rows="4" style="resize: none;"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Question Marks</label>
+                        <input required="required" class="form-control" type="number" id="q-marks">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Question Type</label>
+                        <select required="required" class="form-control" id="q-type">
+                            <option value="written">Written</option>
+                            <option value="mcq" selected>Multiple Choice</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6" id="answer-1-col">
+                    <div class="form-group">
+                        <label>Answer 1</label>
+                        <input required="required" class="form-control" type="text" id="answer-1">
+                    </div>
+                </div>
+                <div class="col-lg-6" id="answer-2-col">
+                    <div class="form-group">
+                        <label>Answer 2</label>
+                        <input required="required" class="form-control" type="text" id="answer-2">
+                    </div>
+                </div>
+                <div class="col-lg-6" id="answer-3-col">
+                    <div class="form-group">
+                        <label>Answer 3</label>
+                        <input class="form-control" type="text" id="answer-3">
+                    </div>
+                </div>
+                <div class="col-lg-6" id="answer-4-col">
+                    <div class="form-group">
+                        <label>Answer 4</label>
+                        <input class="form-control" type="text" id="answer-4">
+                    </div>
+                </div>
+                <div class="col-12" id="correct-answer-col">
+                  <div class="form-group">
+                    <label>Correct Answer</label>
+                    <select required="required" class="form-control" id="correct-answer">
+                      <option value="1" selected>Answer 1</option>
+                      <option value="2">Answer 2</option>
+                      <option value="3">Answer 3</option>
+                      <option value="4">Answer 4</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <p class="form-text text-muted mb-3" id="answer-note">*Leave any answer box empty if less than 4 answer choices are desired. A minimum of 2 answer choices are required.</p>
+                </div>
+                <div class="col-lg-6">
+                    <button type="submit" class="btn btn-primary text-uppercase float-right" id="add-question">Add</button>
+                </div>
+            </div>
+            <!-- / Form Fields -->
+        </div>
+    </div>
+    <div class="card mt-3 mt-md-4">
+        <div class="card-header">
+            <h5 class="card-title">Question List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-wrapper table-responsive">
+                <table id="contact-groups" class="table table-striped">
+                    <thead>
+                        <tr>
+                          <th scope="col">Question</th>
+                          <th scope="col">Marks</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="question-list">
+                      <% @questions.each_with_index do |q, i| %>
+                        <tr id="row_<%= i.to_s %>">
+                          <td scope="col"><%= q.q_text %></td>
+                          <td scope="col"><%= q.marks %></td>
+                          <td scope="col"><%= q.q_type.capitalize %></td>
+                          <td class="table-action">
+                            <button type="button" id="view-question" name="<%= i.to_s %>" class="btn btn-primary view-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#viewQuestion">View</button>
+                            <button type="button" id="edit-question" name="<%= i.to_s %>" class="btn btn-success edit-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#editQuestion">Edit</button>
+                            <button type="button" id="delete-question" name="<%= i.to_s %>" class="btn btn-danger btn-delete delete-question" data-confirm="Are you sure want to delete this question?">Delete</button>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- / Page Content -->
+
+<div id="editQuestion" class="modal fade" style="z-index:1060;" role="dialog" aria-labelledby="editQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Question Details</h5>
+                <a class="close add-watermark-cancel" style="border: none;" type="button" data-dismiss="modal" aria-label="Close">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Question Text</label>
+                                <textarea required="required" class="form-control" id="q-text-e" rows="4" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Question Marks</label>
+                                <input required="required" class="form-control" type="number" id="q-marks-e">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-1-col-e">
+                            <div class="form-group">
+                                <label>Answer 1</label>
+                                <input required="required" class="form-control" type="text" id="answer-1-e">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-2-col-e">
+                            <div class="form-group">
+                                <label>Answer 2</label>
+                                <input required="required" class="form-control" type="text" id="answer-2-e">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-3-col-e">
+                            <div class="form-group">
+                                <label>Answer 3</label>
+                                <input class="form-control" type="text" id="answer-3-e">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-4-col-e">
+                            <div class="form-group">
+                                <label>Answer 4</label>
+                                <input class="form-control" type="text" id="answer-4-e">
+                            </div>
+                        </div>
+                        <div class="col-12" id="correct-answer-col-e">
+                          <div class="form-group">
+                            <label>Correct Answer</label>
+                            <select required="required" class="form-control" id="correct-answer-e">
+                              <option value="1" selected>Answer 1</option>
+                              <option value="2">Answer 2</option>
+                              <option value="3">Answer 3</option>
+                              <option value="4">Answer 4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <p class="form-text text-muted mb-3" id="answer-note-e">*Leave any answer box empty if less than 4 answer choices are desired. A minimum of 2 answer choices are required.</p>
+                        </div>
+                        <input type="hidden" id="q-type-e" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="update-question" name="" data-dismiss="modal">Save changes</button>
+                <button type="button" class="btn btn-secondary add-watermark-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div id="viewQuestion" class="modal fade" style="z-index:1059;" role="dialog" aria-labelledby="viewQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Question Details</h5>
+                <a class="close add-watermark-cancel" style="border: none;" type="button" data-dismiss="modal" aria-label="Close">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Question Text</label>
+                                <textarea disabled class="form-control form-readonly" id="q-text-v" rows="4" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Question Marks</label>
+                                <input disabled class="form-control form-readonly" type="number" id="q-marks-v">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-1-col-v">
+                            <div class="form-group">
+                                <label>Answer 1</label>
+                                <input disabled class="form-control form-readonly" type="text" id="answer-1-v">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-2-col-v">
+                            <div class="form-group">
+                                <label>Answer 2</label>
+                                <input disabled class="form-control form-readonly" type="text" id="answer-2-v">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-3-col-v">
+                            <div class="form-group">
+                                <label>Answer 3</label>
+                                <input disabled class="form-control form-readonly" type="text" id="answer-3-v">
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="answer-4-col-v">
+                            <div class="form-group">
+                                <label>Answer 4</label>
+                                <input disabled class="form-control form-readonly" type="text" id="answer-4-v">
+                            </div>
+                        </div>
+                        <div class="col-12" id="correct-answer-col-v">
+                          <div class="form-group">
+                            <label>Correct Answer</label>
+                            <select disabled class="form-control form-readonly" id="correct-answer-v">
+                              <option value="1" selected>Answer 1</option>
+                              <option value="2">Answer 2</option>
+                              <option value="3">Answer 3</option>
+                              <option value="4">Answer 4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <p class="form-text text-muted mb-3" id="answer-note-v">*Leave any answer box empty if less than 4 answer choices are desired. A minimum of 2 answer choices are required.</p>
+                        </div>
+                        <input type="hidden" id="q-type-v" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary add-watermark-cancel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  questions = <%=raw @q_array %>;
+  index = <%= @questions.count %>;
+  deleted = 0;
+
+  $(document).ready(function() {
+    start = new Date('<%= @quiz.start_date %>');
+    end = new Date('<%= @quiz.end_date %>');
+
+    $('#start-date').datepicker({dateFormat: 'dd M yy'}).datepicker('setDate', start);
+    $('#end-date').datepicker({dateFormat: 'dd M yy'}).datepicker('setDate', end);
+
+    startMin = new Date(end.setDate(end.getDate() - 7));
+    startMax = new Date(end.setDate(end.getDate() + 7));
+    endMin = new Date(start.setDate(start.getDate()));
+    endMax = new Date(start.setDate(start.getDate() + 7));
+
+    $('#start-date').datepicker('option', 'minDate', startMin).datepicker('option', 'maxDate', startMax);
+    $('#end-date').datepicker('option', 'minDate', endMin).datepicker('option', 'maxDate', endMax);
+  });
+
+  $('#start-date').change(function() {
+    if ($(this).val() == '') {
+      min = 0;
+      max = null;
+    }
+    else {
+      date = new Date($(this).val());
+      min = new Date(date.setDate(date.getDate()));
+      max = new Date(date.setDate(date.getDate() + 7));
+    }
+
+    $('#end-date').datepicker('option', 'minDate', min).datepicker('option', 'maxDate', max);
+  });
+
+  $('#end-date').change(function() {
+    if ($(this).val() == '') {
+      min = 0;
+      max = null;
+    }
+    else {
+      date = new Date($(this).val());
+      min = new Date(date.setDate(date.getDate() - 7));
+      max = new Date(date.setDate(date.getDate() + 7));
+    }
+
+    $('#start-date').datepicker('option', 'minDate', min).datepicker('option', 'maxDate', max);
+  });
+
+  $('#quiz_q_type').change(function() {
+    if ($(this).val() == 'classic') {
+      $('#q-type').prop("disabled", false);
+    }
+    else {
+      $('#q-type').val('mcq').change();
+      $('#q-type').prop("disabled", true);
+      
+      $('#answer-1-col').prop("disabled", false).show();
+      $('#answer-2-col').prop("disabled", false).show();
+      $('#answer-3-col').prop("disabled", false).show();
+      $('#answer-4-col').prop("disabled", false).show();
+      $('#correct-answer-col').prop("disabled", false).show();
+      $('#answer-note').show();
+    }
+  });
+
+  $('#q-type').change(function() {
+    if ($(this).val() == 'written') {
+      $('#q-text').val('');
+      $('#q-marks').val('');
+      $('#answer-1').val('');
+      $('#answer-2').val('');
+      $('#answer-3').val('');
+      $('#answer-4').val('');
+      $('#correct-answer').val('1');
+
+      $('#answer-1-col').prop("disabled", true).hide();
+      $('#answer-2-col').prop("disabled", true).hide();
+      $('#answer-3-col').prop("disabled", true).hide();
+      $('#answer-4-col').prop("disabled", true).hide();
+      $('#correct-answer-col').prop("disabled", true).hide();
+      $('#answer-note').hide();
+    }
+    else {
+      $('#answer-1-col').prop("disabled", false).show();
+      $('#answer-2-col').prop("disabled", false).show();
+      $('#answer-3-col').prop("disabled", false).show();
+      $('#answer-4-col').prop("disabled", false).show();
+      $('#correct-answer-col').prop("disabled", false).show();
+      $('#answer-note').show();
+    }
+  });
+
+  $('#add-question').click(function() {
+    details = [];
+    
+    details.push($('#q-text').val());
+    details.push($('#q-marks').val());
+    details.push($('#q-type').val());
+    details.push($('#answer-1').val());
+    details.push($('#answer-2').val());
+    details.push($('#answer-3').val());
+    details.push($('#answer-4').val());
+    details.push($('#correct-answer').val());
+
+    questions.push(details);
+
+    $('#question-list').append('<tr id="row_' + index.toString() + '"><td scope="col">' + details[0] + '</td><td scope="col">' + details[1] + '</td><td scope="col">' + details[2] + '</td><td class="table-action"><button type="button" id="view-question" name="' + index.toString() + '" class="btn btn-primary view-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#viewQuestion">View</button> <button type="button" id="edit-question" name="' + index.toString() + '" class="btn btn-success edit-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#editQuestion">Edit</button> <button type="button" id="delete-question" name="' + index.toString() + '" class="btn btn-danger btn-delete delete-question" data-confirm="Are you sure want to delete this question?">Delete</button></td></tr>')
+
+    $('#q-text').val('');
+    $('#q-marks').val('');
+    $('#answer-1').val('');
+    $('#answer-2').val('');
+    $('#answer-3').val('');
+    $('#answer-4').val('');
+    $('#correct-answer').val('1');
+
+    index++;
+  });
+
+  $(document).on('click', '.edit-question', function(){
+    id = parseInt($(this).attr('name'));
+    details = questions[id];
+
+    $('#q-text-e').val(details[0]);
+    $('#q-marks-e').val(details[1]);
+    $('#q-type-e').val(details[2]);
+
+    if (details[2] == 'mcq') {
+      $('#answer-1-e').val(details[3]);
+      $('#answer-2-e').val(details[4]);
+      $('#answer-3-e').val(details[5]);
+      $('#answer-4-e').val(details[6]);
+      $('#correct-answer-e').val(details[7]);
+
+      $('#answer-1-col-e').prop("disabled", false).show();
+      $('#answer-2-col-e').prop("disabled", false).show();
+      $('#answer-3-col-e').prop("disabled", false).show();
+      $('#answer-4-col-e').prop("disabled", false).show();
+      $('#correct-answer-col-e').prop("disabled", false).show();
+      $('#answer-note-e').show();
+    }
+    else {
+      $('#answer-1-col-e').prop("disabled", true).hide();
+      $('#answer-2-col-e').prop("disabled", true).hide();
+      $('#answer-3-col-e').prop("disabled", true).hide();
+      $('#answer-4-col-e').prop("disabled", true).hide();
+      $('#correct-answer-col-e').prop("disabled", true).hide();
+      $('#answer-note-e').hide();
+    }
+
+    $('#update-question').attr('name', $(this).attr('name'));
+  });
+
+  $('#update-question').click(function() {
+    id = parseInt($(this).attr('name'));
+    details = [];
+    
+    details.push($('#q-text-e').val());
+    details.push($('#q-marks-e').val());
+    details.push($('#q-type-e').val());
+    details.push($('#answer-1-e').val());
+    details.push($('#answer-2-e').val());
+    details.push($('#answer-3-e').val());
+    details.push($('#answer-4-e').val());
+    details.push($('#correct-answer-e').val());
+
+    questions[id] = details;
+
+    $('#row_' + id.toString()).replaceWith('<tr id="row_' + id.toString() + '"><td scope="col">' + details[0] + '</td><td scope="col">' + details[1] + '</td><td scope="col">' + details[2] + '</td><td class="table-action"><button type="button" id="view-question" name="' + id.toString() + '" class="btn btn-primary view-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#viewQuestion">View</button> <button type="button" id="edit-question" name="' + id.toString() + '" class="btn btn-success edit-question" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#editQuestion">Edit</button> <button type="button" id="delete-question" name="' + id.toString() + '" class="btn btn-danger btn-delete delete-question" data-confirm="Are you sure want to delete this question?">Delete</button></td></tr>')
+  });
+
+  $(document).on('click', '.view-question', function(){
+    id = parseInt($(this).attr('name'));
+    details = questions[id];
+
+    $('#q-text-v').val(details[0]);
+    $('#q-marks-v').val(details[1]);
+    $('#q-type-v').val(details[2]);
+
+    if (details[2] == 'mcq') {
+      $('#answer-1-v').val(details[3]);
+      $('#answer-2-v').val(details[4]);
+      $('#answer-3-v').val(details[5]);
+      $('#answer-4-v').val(details[6]);
+      $('#correct-answer-v').val(details[7]);
+
+      $('#answer-1-col-v').prop("disabled", false).show();
+      $('#answer-2-col-v').prop("disabled", false).show();
+      $('#answer-3-col-v').prop("disabled", false).show();
+      $('#answer-4-col-v').prop("disabled", false).show();
+      $('#correct-answer-col-v').prop("disabled", false).show();
+      $('#answer-note-v').show();
+    }
+    else {
+      $('#answer-1-col-v').prop("disabled", true).hide();
+      $('#answer-2-col-v').prop("disabled", true).hide();
+      $('#answer-3-col-v').prop("disabled", true).hide();
+      $('#answer-4-col-v').prop("disabled", true).hide();
+      $('#correct-answer-col-v').prop("disabled", true).hide();
+      $('#answer-note-v').hide();
+    }
+  });
+
+  $(document).on('click', '.delete-question', function(){
+    id = parseInt($(this).attr('name'));
+
+    questions[id][2] = 'deleted';
+    
+    $('#row_' + id.toString()).remove();
+
+    deleted++;
+  });
+  
+  $(document).on('click', '#submit', function(){
+    count = index - deleted;
+    $('#question-number').val(count.toString());
+
+    for (let i = 0; i < index; i++) {
+      $('#question-data').append('<input id="question-data" type="hidden" name="questions[data][' + i.toString() + ']" value="' + questions[i] + '">');
+    }
+  });
+</script>

@@ -1,0 +1,216 @@
+<div id="live-body" class="page-content">
+  <h1 class="mb-2"><%= @quiz.name %></h1>
+  <hr class="pb-2 my-4">
+
+  <div class="card-deck row">
+    <div class="col-lg-3"></div>
+    <div class="col-12 col-lg-6">
+      <div class="info-box card mb-30">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-12">
+              <div class="form-group">
+                <label style="font-size: 1.5em; color:black">Quiz Code:</label>
+                <h3><%= @quiz.code %></h3>
+              </div>
+            </div>
+          </div>
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-label-md text-nowrap mb-3 flex-fill">Quiz Participants</h5>
+              <div id="registered-list" class="d-flex flex-column-reverse attendance-list" style="height: 300px; overflow-y: scroll; border: 1px solid #ccd0e4; border-radius: 0 0 3px 3px; padding: 1rem;">
+                <% @quiz.quiz_answers.each do |qa| %>
+                  <h5 id="<%= qa.user.id %>" class="mb-2"><%= qa.user.name %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% if @host %>
+            <div class="btn-group info-box-action d-flex" role="group">
+              <button id="start-button" class="info-box-btn-main flex-fill btn btn-blue-gradient" style="font-size: 1.3em; text-align: center; padding: 1rem !important;">Start</button>
+            </div>
+          <% else %>
+            <p style="font-style: italic;">Waiting for host to start quiz...</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>
+</div>
+
+<script>
+  <% if @quiz.user == @user %>
+    var scores = new Map();
+    scores_sorted = [];
+    total = <%= @quiz.quiz_answers.count %>;
+    current = 0;
+    q_number = 0;
+  <% end %>
+
+  user_id = <%= @user.id %>;
+  user_name = '<%= @user.name %>';
+  is_host = <%= @host %>;
+  answer_no = 0;
+
+  App.quiz = App.cable.subscriptions.create({
+    channel: 'QuizChannel',
+    quizID: <%= @quiz.id %>,
+    userID: user_id
+  }, {
+    connected: function() {
+    },
+    disconnected: function() {
+    },
+    received: function(data) {
+      if(data['type'] == 'join') {
+        exists = false;
+
+        $('#registered-list').children().each(function() {
+          if($(this).attr('id') == data['id'].toString()) {
+            exists = true;
+          }
+        });
+
+        if(!exists) {
+          <% if @host %>      
+            total++;
+          <% end %>
+          $('#registered-list').append('<h5 id="' + data['id'].toString() + '" class="mb-2">' + data['name'] + '</p>');
+        }
+      }
+      else if(data['type'] == 'start') {
+        $('#live-body').replaceWith(data['body']);
+      }
+      <% if @host %>
+        else if(data['type'] == 'answer') {
+          user_marks = scores.get(data['user']);
+          if (user_marks == null) {
+            user_marks = data['marks'];
+          }
+          else {
+            user_marks += data['marks'];
+          }
+          
+          scores.set(data['user'], user_marks)
+          current++;
+
+          if(current == total) {
+            q_number++;
+            current = 0;
+
+            scores[Symbol.iterator] = function* () {
+                yield* [...this.entries()].sort((a, b) => b[1] - a[1]);
+            }
+
+            scores_sorted = [...scores];
+
+            App.quiz.leaderboard(scores_sorted, data['question']);
+          }
+        }
+      <% end %>
+      else if(data['type'] == 'leaderboard') {
+        $('#live-body').replaceWith(data['body']);
+
+        if(user_id == data['host']) {
+          $('#lb-body').append('<div class="btn-group info-box-action d-flex" role="group"> <button id="proceed-button" class="info-box-btn-main flex-fill btn btn-blue-gradient" style="font-size: 1.3em; text-align: center; padding: 1rem !important;">Proceed</button> </div>');
+        }
+        else {
+          $('#lb-body').append('<p style="font-style: italic;">Get ready for the next question!</p>');
+        }
+      }
+      else if(data['type'] == 'end') {
+        $('#live-body').replaceWith(data['body']);
+
+        if(user_id != data['host']) {
+          row = data['scores'].find(function(row) {
+            return row[0] == user_name;
+          });
+          total_marks = row[1];
+
+          $('#end-top').append('<div class="col-12 mt-3"> <h4>Your Total Marks: ' + total_marks + '</h4> </div>');
+        }
+      }
+    },
+    start: function() {
+      this.perform('start', {
+        question: <%= @quiz.questions.first.id %>,
+        quiz: <%= @quiz.id %>,
+        quiz_name: '<%= @quiz.name %>'
+      });
+    },
+    answer: function(answer_number, question) {
+      <% if @quiz.user != @user %>
+        answer_no = 0;
+
+        this.perform('answer', {
+          answer_number: answer_number,
+          question: question,
+          user: user_id,
+          <%= !@host ? 'qa: ' + @qa.id.to_s + ',' : '' %>
+          quiz: <%= @quiz.id %>
+        });
+      <% end %>
+    },
+    leaderboard: function(data, question) {
+      this.perform('leaderboard', {
+        scores: data,
+        question: question,
+        quiz: <%= @quiz.id %>,
+        quiz_name: '<%= @quiz.name %>',
+        q_number: q_number
+      });
+    },
+    proceed: function(data) {
+      this.perform('proceed', {
+        scores: data,
+        quiz: <%= @quiz.id %>,
+        quiz_name: '<%= @quiz.name %>',
+        q_number: q_number
+      });
+    }
+  });
+
+  $(document).on('click', '#start-button', function(){
+    App.quiz.start();
+  });
+
+  $(document).on('click', '#proceed-button', function(){
+    App.quiz.proceed(scores_sorted);
+  });
+
+  $(document).on('click', '#exit-button', function(){
+    <% if @host %> 
+      window.location.replace('/user/quizzes');
+    <% else %>
+      window.location.replace('/user/do');
+    <% end %>
+  });
+  
+  <% if !@host %> 
+    $(document).on('click', '.answer-button', function(){
+      number = parseInt($(this).attr('name'));
+
+      $('.answer-button').css('background-color', '#DEDEDE');
+      $('.answer-button').attr('value', 'ignored');
+      $(this).attr('value', 'chosen');
+
+      switch(number) {
+        case 1:
+          $(this).css('background-color', '#FF7E7E');
+          break;
+        case 2:
+          $(this).css('background-color', '#7EABFF');
+          break;
+        case 3:
+          $(this).css('background-color', '#FFFD7E');
+          break;
+        case 4:
+          $(this).css('background-color', '#7EFF93');
+          break;
+      }
+      
+      answer = number;
+    });
+  <% end %> 
+</script>

@@ -1,0 +1,46 @@
+<div id="live-body" class="page-content">
+  <h1 class="mb-2"><%= name %></h1>
+  <hr class="pb-2 my-4">
+
+  <div class="card-deck row">
+    <div class="col-lg-2"></div>
+    <div class="col-12 col-lg-8">
+      <div class="info-box card mb-30">
+        <div id="lb-body" class="card-body">
+          <div class="form-row">
+            <div class="col-12">
+              <div class="form-group">
+                <label style="font-size: 1.5em; color:black">Question <%= number %></label>
+              </div>
+            </div>
+            <div class="col-12 mt-3">
+              <h4>Correct Answer: <%= correct_answer %></h4>
+              <h4>Marks Awarded: <%= marks %></h4>
+            </div>
+          </div>
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-label-md text-nowrap mb-3 flex-fill">Score Leaderboard</h5>
+              <div id="registered-list" class="attendance-list" style="height: 300px; overflow-y: scroll; border: 1px solid #ccd0e4; border-radius: 0 0 3px 3px; padding: 1rem;">
+                <% scores.each_with_index do |s, i| %>
+                  <div class="row">
+                    <div class="col-4">
+                      <h5 class="mb-2"><%= (i + 1).to_s %>.</p>
+                    </div>
+                    <div class="col-4">
+                      <h5 class="mb-2"><%= s[0] %></p>
+                    </div>
+                    <div class="col-4">
+                      <h5 class="mb-2"><%= s[1] %></p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>

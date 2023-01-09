@@ -1,0 +1,465 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree ./vendor
+ *= require_self
+ */
+ 
+.radio-button {
+  display: inline-block;
+}
+.radio-button input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+.radio-button input[type="radio"] + label {
+  border: 1px solid #ccc;
+  padding: 0 50px;
+  height: 50px;
+  line-height: 50px;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  border-radius: 5px;
+}
+.radio-button input[type="radio"]:checked + label {
+  background: #01d0d6;
+  color: white;
+}
+
+.radio-check {
+  color: white;
+  font-size: 1rem;
+  height: 2.125rem;
+  line-height: 2.9rem;
+  left: -10px;
+  margin: 0;
+  padding: 0 1rem;
+  position: absolute;
+  text-align: right;
+  top: 0;
+  visibility: visible;
+  width: 100%;
+}
+
+#loading-ajax {
+  background: rgba(0, 0, 0, 0.2) url("/assets/loader.gif") no-repeat 50% 50%;
+  background-size: 100px 100px;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+pre {
+  padding: 10px;
+  background-color: #eeeeee59;
+  border: none;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  display: block;
+  position: relative;
+  overflow: visible;
+  clear: both;
+  white-space: pre-wrap;
+}
+pre .btn-copy {
+  top: 4px;
+  right: 4px;
+  opacity: 0;
+  visibility: hidden;
+  padding: 3px 6px;
+  position: absolute;
+  -webkit-transition: opacity 0.2s ease-in 0s, width 2s ease-in 2s;
+  transition: opacity 0.2s ease-in 0s, width 2s ease-in 2s;
+}
+pre:hover .btn-copy {
+  visibility: visible;
+  opacity: 1;
+}
+pre .btn-copy-no-clipboard {
+  top: 4px;
+  right: 4px;
+  opacity: 0;
+  visibility: hidden;
+  padding: 3px 6px;
+  position: absolute;
+  -webkit-transition: opacity 0.2s ease-in 0s, width 2s ease-in 2s;
+  transition: opacity 0.2s ease-in 0s, width 2s ease-in 2s;
+}
+pre:hover .btn-copy-no-clipboard {
+  visibility: visible;
+  opacity: 1;
+}
+
+.highlight {
+  background-color: #8dc1ee !important;
+}
+
+.new-statistic {
+  min-height: 535px !important;
+  color: #646b86;
+  border: 2px dashed rgba(179, 186, 216, 0.5);
+  background-color: #eff1f9;
+}
+.new-statistic:hover {
+  border-color: #b3bad8;
+}
+
+label.error {
+  color: red;
+  font-size: 1rem;
+  display: block;
+  margin-top: 5px;
+}
+
+input.error {
+  border: 1px solid red;
+  font-weight: 300;
+  color: red;
+}
+
+.brand-wrapper {
+  margin-bottom: 19px;
+}
+.brand-wrapper .logo {
+  height: 37px;
+}
+
+.login-header {
+  margin: 85px 60px 60px;
+  display: inline-block;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+}
+.login-header div {
+  text-align: left;
+}
+.login-card {
+  border: 0;
+  border-radius: 27.5px;
+  box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
+  overflow: hidden;
+}
+.login-card-img {
+  border-radius: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+.login-card .card-body {
+  padding: 85px 60px 60px;
+}
+@media (max-width: 422px) {
+  .login-card .card-body {
+    padding: 35px 24px;
+  }
+}
+.login-card-description {
+  font-size: 25px;
+  color: #000;
+  font-weight: normal;
+  margin-bottom: 23px;
+}
+.login-card form {
+  max-width: 326px;
+}
+.login-card .form-control {
+  border: 1px solid #d5dae2;
+  padding: 15px 25px;
+  margin-bottom: 20px;
+  min-height: 45px;
+  font-size: 13px;
+  font-weight: normal;
+}
+.login-card .form-control::-webkit-input-placeholder {
+  color: #919aa3;
+}
+.login-card .form-control::-moz-placeholder {
+  color: #919aa3;
+}
+.login-card .form-control:-ms-input-placeholder {
+  color: #919aa3;
+}
+.login-card .form-control::-ms-input-placeholder {
+  color: #919aa3;
+}
+.login-card .form-control::placeholder {
+  color: #919aa3;
+}
+.login-card .login-btn {
+  padding: 13px 20px 12px;
+  background-color: #000;
+  border-radius: 4px;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 20px;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.login-card .login-btn:hover {
+  border: 1px solid #000;
+  background-color: transparent;
+  color: #000;
+}
+.login-card .forgot-password-link {
+  font-size: 14px;
+  color: #919aa3;
+  margin-bottom: 12px;
+}
+.login-card-footer-text {
+  font-size: 16px;
+  color: #0d2366;
+  margin-bottom: 60px;
+}
+@media (max-width: 767px) {
+  .login-card-footer-text {
+    margin-bottom: 24px;
+  }
+}
+.login-card-footer-nav a {
+  font-size: 14px;
+  color: #919aa3;
+}
+
+.auth-alert .alert {
+  padding: 1rem 0 0;
+  text-align: center;
+}
+
+.countdown-numbers {
+  font-size: 3.5em;
+}
+.countdown-daytime {
+  font-size: 1.8em;
+}
+.countdown {
+  width: 30%;
+}
+
+.attendance-field-check-label .card-body {
+  color: black;
+}
+.attendance-field-check:checked + .attendance-field-check-label .card-body {
+  background: linear-gradient(135deg, #2cadf1 0%, #3655c4 100%);
+  color: white;
+}
+.attendance-field-check-label {
+  margin-bottom: 0;
+  display: unset;
+  cursor: pointer;
+}
+
+.message-body a {
+  color: #007bff;
+}
+
+.webinar-text {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 26px;
+  color: #484d5f !important;
+  line-height: 38px !important;
+}
+
+.webinar-banner{
+  width: 60%;
+}
+
+#card-webinar-chat {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 45px;
+}
+#webinar-messages {
+  height: 604px;
+}
+
+.nav-web-name {
+  font-size: 20px;
+  font-weight: 500;
+  color: #e8efff;
+  text-align: center;
+  line-height: 17px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.page-title {
+  font-size: 2em !important;
+}
+
+.form-readonly {
+  background-color: transparent !important;
+  color: #515d74 !important;
+  border-color: #ccd0e4 !important;
+}
+
+.answer-button {
+  border: 1px solid #ADADAD;
+  border-radius: 15px;
+}
+
+
+/* Style for Medium Screen */
+@media (max-width:767px) {
+.btn-sq-responsive {
+width: 100px !important; /* whatever width you want for medium screen */
+max-width: 100% !important;
+max-height: 100% !important;
+height: 100px !important; /* whatever height you want for medium screen */
+font-size:12px;
+}
+}
+
+/* Style for Small Screen */
+@media (max-width:575px) {
+.btn-sq-responsive {
+width: 50px !important; /* whatever width you want for mobile screen */
+max-width: 100% !important;
+max-height: 100% !important;
+height: 50px !important; /* whatever height you want for mobile screen */
+font-size:5px;
+padding: 0px;
+font-size:7px;
+}
+}
+
+@media screen and (max-width: 1680px) {
+  #webinar-messages {
+    height: 514px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .countdown-numbers {
+    font-size: 2.9em;
+  }
+  .countdown-daytime {
+    font-size: 1.8em;
+  }
+  .countdown {
+    width: 40%;
+  }
+  .webinar-text {
+    font-size: 22px;
+    line-height: 34px !important;
+  }
+
+  #webinar-messages {
+    height: 424px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .countdown-numbers {
+    font-size: 2.6em;
+  }
+  .countdown-daytime {
+    font-size: 1.4em;
+  }
+  .countdown {
+    width: 50%;
+  }
+  .webinar-text {
+    font-size: 20px;
+    line-height: 31px !important;
+  }
+  .webinar-banner{
+    width: 65%;
+  }
+
+  #card-webinar-chat {
+    position: relative !important;
+    top: 0;
+  }
+  #webinar-messages {
+    height: 374px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .login-header-col {
+    text-align: center;
+  }
+  .login-header {
+    margin: 85px auto 60px;
+  }
+  .countdown-numbers {
+    font-size: 2.5em;
+  }
+  .countdown-daytime {
+    font-size: 1.3em;
+  }
+  .countdown {
+    width: 60%;
+  }
+  .webinar-text {
+    font-size: 18px;
+    line-height: 27px !important;
+  }
+  .webinar-banner{
+    width: 80%;
+  }
+
+  #webinar-messages {
+    height: 444px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-header {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+  .countdown-numbers {
+    font-size: 2.5em;
+  }
+  .countdown-daytime {
+    font-size: 1.6em;
+  }
+  .countdown {
+    width: 70%;
+  }
+  .webinar-text {
+    font-size: 16px;
+    line-height: 23px !important;
+  }
+
+  #webinar-messages {
+    height: 304px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .countdown-numbers {
+    font-size: 2.3em;
+  }
+  .countdown-daytime {
+    font-size: 1.3em;
+  }
+  .countdown {
+    width: 100%;
+  }
+  .webinar-text {
+    font-size: 14px;
+    line-height: 20px !important;
+  }
+  .webinar-banner{
+    width: 85%;
+  }
+} 

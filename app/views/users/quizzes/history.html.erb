@@ -1,0 +1,43 @@
+<!-- Page Content -->
+<div class="page-content">
+  <div class="page-header d-flex flex-column flex-md-row align-items-md-center">
+      <div class="page-header-left flex-fill">
+          <div class="page-header-title d-flex">
+              <div class="page-info mt-3 ml-0">
+                <h5 class="page-title">Quiz History</h5>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Quiz List Table -->
+  <div class="table-wrapper table-responsive">
+    <table id="contact-groups" class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Quiz</th>
+          <th scope="col">Type</th>
+          <th scope="col">Start Time</th>
+          <th scope="col">End Time</th>
+          <th scope="col">Marks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @history.each do |qa| %>
+          <tr>
+            <td scope="col"><%= qa.quiz.name %></td>
+            <td scope="col"><%= qa.quiz.q_type.capitalize %></td>
+            <td scope="col"><%= DateTime.new(qa.start_date.year, qa.start_date.month, qa.start_date.day, qa.start_time.hour, qa.start_time.min, qa.start_time.sec, qa.start_time.zone).strftime("%Y-%-m-%-d %H:%M:%S") %></th>
+            <td scope="col"><%= DateTime.new(qa.end_date.year, qa.end_date.month, qa.end_date.day, qa.end_time.hour, qa.end_time.min, qa.end_time.sec, qa.end_time.zone).strftime("%Y-%-m-%-d %H:%M:%S") %></th>
+            <% if qa.total_marks.nil? %>
+              <td scope="col">Pending</td>
+            <% else %>
+              <td scope="col"><%= qa.total_marks %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- / Quiz List Table -->
+</div>

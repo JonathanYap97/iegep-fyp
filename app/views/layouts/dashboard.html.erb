@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IEGEP</title>
+    <%= csrf_meta_tags %> <%= csp_meta_tag %> 
+    <meta name="viewport" content="width=device-width">
+    <%= stylesheet_link_tag    'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', media: 'all', 'data-turbolinks-track': 'reload' %> 
+    <%= stylesheet_link_tag    'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css' %>
+    <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js' ,'data-turbolinks-track': 'reload'%>
+    <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js','data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload'%> 
+    <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/esm/popper.min.js', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag asset_path('favicon.png') %>
+  </head>
+
+  <body>
+    <div class="page-container">
+      <!-- Page Body -->
+      <%url = request.path_info%>
+      <div class="page-body">
+        <%= render 'layouts/shared/users_top'%> 
+        <%= render'layouts/shared/users_nav', locals: {path: @base_url}%> 
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+
+  <%= javascript_include_tag 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js','data-turbolinks-track': 'reload' %> 
+
+  <script type="text/javascript">
+    $(".backBtn").click(function() {
+      window.history.back();
+    });
+
+    $(document).ready(function() {
+      $(".highlight").fadeIn("slow", function() {
+          setInterval(function(){
+            $('.highlight').fadeOut(100).fadeIn(100).removeClass('highlight');
+          }, 3000);      
+      });
+
+    });
+  </script>
+</html>

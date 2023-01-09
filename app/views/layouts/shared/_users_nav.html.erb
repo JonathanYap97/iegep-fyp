@@ -1,0 +1,39 @@
+  <!-- Page Sidebar -->
+<div class="page-sidebar navbar-dark">
+    <h4 class="nav-web-name mt-3 mt-md-5">IEGEP</h4>
+
+    <!-- Sidebar Navigation -->
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#sidebar-nav" aria-controls="sidebar-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <nav class="side-navbar navbar navbar-expand-md">
+        <div class="collapse navbar-collapse" id="sidebar-nav">
+            <ul class="sidebar-nav nav nav-pills nav-fill">
+                
+                <li class="nav-item">
+                    <a href="<%= root_path %>" class="nav-link d-flex <%= locals[:path] == 'homepage' ? 'active' : request.path == '/' ? 'active' : '' %>">                  
+                        <span class="ml-2 mt-1" style="font-size: 16px">Homepage</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%= users_quizzes_path %>" class="nav-link d-flex  <%= locals[:path] == 'quizzes' ? 'active' : ''%>">
+                        <span class="ml-2 mt-1" style="font-size: 16px">My Quizzes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%= users_do_quiz_path %>" class="nav-link d-flex <%= locals[:path] == 'do' ? 'active' : ''%>">
+                        <span class="ml-2 mt-1" style="font-size: 16px">Do A Quiz</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%= users_history_path %>" class="nav-link d-flex  <%= locals[:path] == 'history' ? 'active' : ''%>">
+                        <span class="ml-2 mt-1" style="font-size: 16px">Quiz History</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- / Sidebar Navigation -->
+</div>
+<!-- / Page Sidebar -->

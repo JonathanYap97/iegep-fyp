@@ -1,0 +1,37 @@
+<meta name="turbolinks-visit-control" content="reload">
+<!-- Page Content -->
+<div class="page-content">
+  <h1 class="mb-2">Welcome <%= @user.name %> to IEGEP!</h1>
+  <hr class="pb-2 my-4">
+
+  <!-- TODO : Replace style with class -->
+  <div class="card-deck flex-column flex-lg-row">
+      <div class="info-box card mb-30">
+          <div class="card-body">
+              <div class="info-group text-left">
+                  <label style="font-size: 1.5em; color:black">Quizzes Created</label>
+              </div>
+              <div style="height:180px">
+                  <h1 style="font-size: 8rem"><%= @user.quizzes.count %></h1>
+              </div>
+              <div class="btn-group info-box-action d-flex" role="group">
+                  <a href="<%= users_quizzes_path %>" class="info-box-btn-main flex-fill btn btn-blue-gradient" style="font-size: 1.3em; text-align: center; padding: 1rem !important;">Create New Quiz</a>
+              </div>
+          </div>
+      </div>
+      <div class="info-box card mb-30">
+          <div class="card-body">
+              <div class="info-group text-left">
+                  <label style="font-size: 1.5em; color:black">Quizzes Done</label>
+              </div>
+              <div style="height:180px">
+                  <h1 style="font-size: 8rem"><%= @user.quiz_answers.count %></h1>
+              </div>
+
+              <div class="btn-group info-box-action d-flex" role="group">
+                  <a href="<%= users_do_quiz_path %>" class="info-box-btn-main flex-fill btn btn-blue-gradient" style="font-size: 1.3em; text-align: center; padding: 1rem !important;">Do A Quiz</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

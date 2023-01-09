@@ -1,0 +1,48 @@
+<div class="page-content">
+  <h1 class="mb-2">Do A Quiz!</h1>
+  <hr class="pb-2 my-4">
+
+  <div class="card-deck row">
+    <div class="col-lg-3"></div>
+    <div class="col-12 col-lg-6">
+      <div class="info-box card mb-30">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-12">
+              <div class="form-group">
+                <label style="font-size: 1.5em; color:black">Enter Quiz Code</label>
+                <input type="text" required="required" class="form-control mt-4" id="quiz-code">
+              </div>
+            </div>
+          </div>
+          <div class="btn-group info-box-action d-flex" role="group">
+            <button id="do-quiz" class="info-box-btn-main flex-fill btn btn-blue-gradient" style="font-size: 1.3em; text-align: center; padding: 1rem !important;">Do Quiz</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>
+</div>
+
+<script>
+  $(document).on('click', '#do-quiz', function(){
+    $.ajax({
+      url: '/user/do',
+      type: 'POST',
+      data: {code: $('#quiz-code').val()},
+      success: function(data) {
+        if(data['type'] == 'classic') {
+          window.location.replace('/user/quizzes/' + data['id'].toString() + '/do/classic');
+        }
+        else if(data['type'] == 'live') {
+          window.location.replace('/user/quizzes/' + data['id'].toString() + '/do/live');
+        }
+        else {
+          alert('Invalid quiz code.');
+        }
+        return;
+      }
+    });
+  });
+</script>

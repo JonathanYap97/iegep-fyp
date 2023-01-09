@@ -1,0 +1,103 @@
+<!-- Page Content -->
+<div class="page-content">
+  <%= form_for(@qa, url: users_quiz_submit_mark_path, method: :post) do |f| %>
+    <div class="page-header d-flex flex-column flex-md-row align-items-md-center">
+      <div class="page-header-left flex-fill">
+        <div class="page-header-title d-flex">
+          <div class="page-info mt-3 ml-0">
+            <h5 class="page-title">Mark Jonathan Yap's Answers</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header d-md-flex align-items-center">
+      <div class="section-header-left flex-fill">
+        <a href="<%= users_quiz_answers_path %>" class="page-btn-link">
+          <i class="icon icon-reply"></i>
+          Back to Answer List
+        </a>
+      </div>
+      <div class="section-header-right ml-auto">
+        <button type="submit" class="btn btn-primary text-uppercase">Submit</button>
+      </div>
+    </div>
+    <div class="card mt-3 mt-md-4">
+      <div class="card-header">
+        <h5 class="card-title">Answers</h5>
+      </div>
+      <div class="card-body">
+        <% @quiz.questions.each_with_index do |q, i| %>
+          <% qqa = q.question_answers.find_by(quiz_answer: @qa) %>
+          <% if q.q_type == 'written' %>
+            <div class="form-row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="font-size: 15px;">Question <%= i + 1 %> (<%= q.q_type.capitalize %>)</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly><%= q.q_text %>
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Answer</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly><%= qqa.answer %></textarea>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label>Marks to Award (Max <%= q.marks %>)</label>
+                  <input required="required" class="form-control" type="number" name="marks[<%= qqa.id %>]" id="mark" min="0" max="<%= q.marks %>">
+                </div>
+              </div>
+            </div>
+            <hr class="pb-2 mt-1 mt-md-2 mb-3 mb-md-4">
+          <% else %>
+            <div class="form-row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="font-size: 15px;">Question <%= i + 1 %> (<%= q.q_type.capitalize %>)</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly><%= q.q_text %>
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Answer Choices</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly>
+  A. <%= q.answer_1 %>
+  B. <%= q.answer_2 %>
+  C. <%= q.answer_3 %>
+  D. <%= q.answer_4 %>
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label>Answer:</label>
+                  <select disabled class="form-control" id="answer">
+                    <option value="1" <%= qqa.answer.to_i == 1 ? 'selected' : '' %>>Answer A</option>
+                    <option value="2" <%= qqa.answer.to_i == 2 ? 'selected' : '' %>>Answer B</option>
+                    <option value="3" <%= qqa.answer.to_i == 3 ? 'selected' : '' %>>Answer C</option>
+                    <option value="4" <%= qqa.answer.to_i == 4 ? 'selected' : '' %>>Answer D</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label>Marks to Award (Max <%= q.marks %>)</label>
+                  <input readonly required="required" class="form-control form-readonly" type="number" name="marks[<%= qqa.id %>]" id="mark" value="<%= qqa.answer.to_i == q.correct_answer ? q.marks : '0' %>">
+                </div>
+              </div>
+            </div>
+          <hr class="pb-2 mt-1 mt-md-2 mb-3 mb-md-4">
+        <% end %>
+      <% end %>
+      </div>
+    </div>
+    <div class="section-header d-md-flex align-items-center">
+      <div class="section-header-right ml-auto mt-3 mt-md-4">
+        <button type="submit" class="btn btn-primary text-uppercase">Submit</button>
+      </div>
+    </div>
+  <% end %>
+</div>

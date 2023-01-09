@@ -1,0 +1,111 @@
+<div class="page-content">
+  <%= form_for(@answer, url: users_quiz_submit_classic_path, method: :post) do |f| %>
+    <div class="page-header d-flex flex-column flex-md-row align-items-md-center">
+      <div class="page-header-left flex-fill">
+        <div class="page-header-title d-flex">
+          <div class="page-info mt-3 ml-0">
+            <h5 class="page-title"><%= @quiz.name %></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header d-md-flex align-items-center">
+      <div class="section-header-left">
+        <h5 id="timer" class="px-3 py-2" style="background-color: white;">Loading...</h5>
+      </div>
+      <div class="section-header-right ml-auto">
+        <button type="submit" class="btn btn-primary text-uppercase">Submit</button>
+      </div>
+    </div>
+    <div class="card mt-3 mt-md-4">
+      <div class="card-header">
+        <h5 class="card-title">Answers</h5>
+      </div>
+      <div class="card-body">
+        <% @quiz.questions.each_with_index do |q, i| %>
+          <% if q.q_type == 'written' %>
+            <div class="form-row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="font-size: 15px;">Question <%= i + 1 %> (<%= q.q_type.capitalize %>)</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly><%= q.q_text %></textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Answer:</label>
+                  
+                  <textarea required class="form-control" name="answers[<%= q.id %>]" id="answer" rows="4" style="resize: none;"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr class="pb-2 mt-1 mt-md-2 mb-3 mb-md-4">
+          <% else %>
+          <div class="form-row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label style="font-size: 15px;">Question <%= i + 1 %> (<%= q.q_type.capitalize %>)</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly><%= q.q_text %>
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Answer Choices</label>
+                  <textarea class="form-control form-readonly" rows="4" style="resize: none;" readonly>
+A. <%= q.answer_1 %>
+B. <%= q.answer_2 %>
+C. <%= q.answer_3 %>
+D. <%= q.answer_4 %>
+                  </textarea>
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label>Answer:</label>
+                  <select required="required" class="form-control" name="answers[<%= qqa.id %>]" id="answer">
+                    <option value=""></option>
+                    <option value="1">Answer A</option>
+                    <option value="2">Answer B</option>
+                    <option value="3">Answer C</option>
+                    <option value="4">Answer D</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr class="pb-2 mt-1 mt-md-2 mb-3 mb-md-4">
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="section-header d-md-flex align-items-center">
+      <div class="section-header-right ml-auto mt-3 mt-md-4">
+        <button type="submit" class="btn btn-primary text-uppercase">Submit</button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  var end_time = new Date("<%= @end_time %>").getTime();
+
+  var timer = setInterval(function() {
+    var now = new Date().getTime();
+
+    var distance = end_time - now;
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+    if (distance < 0) {
+      clearInterval(timer);
+      document.getElementById("timer").innerHTML = "ENDED";
+
+      window.location.replace('/user/do');
+    }
+  }, 1000);
+</script>

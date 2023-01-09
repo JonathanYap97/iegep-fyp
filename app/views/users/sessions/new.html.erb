@@ -1,0 +1,45 @@
+<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+  <div class="container">
+    <div class="card login-card">
+      <div class="row no-gutters">
+        <div class="col-md-5 col-lg-7 login-header-col" style="background-color: #91C8FF; background-size: cover;">
+          <div class="login-header">
+            <div class="mb-4" style="font-size: 36px; line-height: 3rem;">Sign in to<br/>IEGEP.</div>
+            <div style="font-size: 16px;">If you don't have an account,<br/>you can <a href="/user/sign_up" style="color: #007bff; font-weight: bold;">register here!</a></div>
+          </div>
+        </div>
+        <div class="col-md-7 col-lg-5">
+          <div class="card-body">
+            <div class="brand-wrapper text-center pb-3">
+              <h2 style="font-size: 2.65em; color: navy; margin-bottom: 0;">IEGEP</h1>
+            </div>
+            <p class="login-card-description text-center">Log in</p>
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {style: 'margin: 0 auto;'} ) do |f| %>
+              <div class="auth-alert">
+                <%= alert %>
+              </div>
+              <div class="form-group mt-5">
+                <label for="email">E-mail</label>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: 'example@gmail.com' %>
+              </div>
+              <div class="form-group mb-0">
+                <label for="password">Password</label>
+                <div class="input-group">
+                  <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Type your password', class: 'form-control border-right-0 input-password' %>
+                  <span class="input-group-append input-group-text bg-transparent" id="toggle-password" style="margin-bottom: 20px; border-radius: 0 .25rem .25rem 0; cursor: pointer;">
+                    <i class="bi bi-eye-slash" id="icon-eye"></i>  
+                  </span>
+                </div>
+              </div>
+              <%= f.submit 'Log in', class: 'btn btn-block login-btn mt-5 mb-4'%>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="text/javascript">
+  <%= render 'layouts/js/toggle_password.js' %>
+</script>
